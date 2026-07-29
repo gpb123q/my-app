@@ -18,7 +18,7 @@ spec:
     stages {
         stage('Test') {
             steps {
-                sh 'echo "Pod 创建成功！1"'
+                sh 'echo "Pod 创建成功！2"'
                 sh 'echo "主机名: $(hostname)"'
                 sh 'echo "当前目录: $(pwd)"'
             }
