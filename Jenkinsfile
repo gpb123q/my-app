@@ -6,42 +6,21 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
-  - name: kubectl
-    image: bitnami/kubectl:latest
-    command:
-    - /bin/sh
-    - -c
-    - |
-      echo "Container started"
-      while true; do sleep 30; done
+  - name: busybox
+    image: busybox
+    command: ["sleep"]
+    args: ["3600"]
 '''
-            defaultContainer 'kubectl'
+            defaultContainer 'busybox'
         }
     }
     
     stages {
-        stage('Deploy') {
+        stage('Test') {
             steps {
-                // 使用 shell 脚本直接执行
-                sh '''
-                    echo "===== 在容器中执行 ====="
-                    
-                    # 检查进程
-                    ps aux
-                    
-                    # 检查 kubectl
-                    which kubectl
-                    
-                    # 简单命令测试
-                    echo "测试 kubectl..."
-                    kubectl version --client
-                    
-                    # 部署（如果集群不可达，会输出错误但不会卡住）
-                    kubectl create deployment my-app --image=nginx:alpine --dry-run=client -o yaml > deploy.yaml
-                    cat deploy.yaml
-                    
-                    echo "===== 完成 ====="
-                '''
+                sh 'echo "Pod 创建成功！"'
+                sh 'echo "主机名: $(hostname)"'
+                sh 'echo "当前目录: $(pwd)"'
             }
         }
     }
