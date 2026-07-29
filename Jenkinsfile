@@ -29,7 +29,6 @@ spec:
                 echo "📌 分支: ${env.BRANCH_NAME}"
                 echo "📌 Commit: ${env.GIT_COMMIT}"
                 
-                // 显示项目文件结构
                 sh 'ls -la'
                 sh 'echo "📂 src 目录内容:" && ls -la src/ || echo "src 目录不存在"'
             }
@@ -51,7 +50,6 @@ spec:
                                 echo "✅ ConfigMap 创建成功（从 src 目录）"
                             else
                                 echo "⚠️ src 目录为空或不存在，创建默认页面"
-                                # 创建默认 HTML
                                 mkdir -p src
                                 cat > src/index.html << 'HTMLEOF'
 <!DOCTYPE html>
@@ -65,7 +63,7 @@ spec:
 </head>
 <body>
     <h1>🚀 Hello from Jenkins + Kubernetes!</h1>
-    <p>Deployed at: $(date)</p>
+    <p>Deployed at: \$(date)</p>
     <p>Version: ${BUILD_NUMBER}</p>
 </body>
 </html>
@@ -119,11 +117,9 @@ spec:
           name: ${APP_NAME}-html
 EOF
                             
-                            # 应用 Deployment
                             kubectl apply -f deploy.yaml
                             echo "✅ Deployment 创建成功"
                             
-                            # 等待部署完成
                             echo "⏳ 等待 Pod 启动..."
                             kubectl rollout status deployment/${APP_NAME} -n ${NAMESPACE} --timeout=120s
                             
